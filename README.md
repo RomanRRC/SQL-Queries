@@ -4,7 +4,7 @@
 Этот репозиторий содержит SQL-запросы которые были мной выполнены в рамках прохожждения курса и подготовки домашнего задания
 <br>С данными запросами Вы можете ознакомиться ниже</br>
 
-## Задание № 1
+ ## Задание № 1 
 
 ### Выведите имя, фамилию, патронуса всех персонажей, у которых есть patronus или он известен
 <br>Select fname, lname, patronus</br>
@@ -113,3 +113,57 @@ select fname FROM `111`.characters where fname like 'H____' OR fname like 'L%' ;
 <br>select lname</br>
 <br>FROM `111`.characters</br>
 <br>Where not lname regexp '^[HLS]';</br>
+
+
+
+
+
+
+
+## Задание № 2
+
+### Выведите имя, фамилию персонажей и название книги, которая на них числится
+
+<br>select fname, lname, book_name</br>
+<br>FROM `111`.characters</br>
+<br>inner join `111`.library</br>
+<br>ON `111`.characters.char_id= `111`.library.char_id;</br>
+
+### Выведите имя, фамилию персонажей и название книги, вне зависимости от того, есть ли у них книги или нет
+<br>select fname,lname,book_name</br>
+<br>from `111`.characters</br>
+<br>Left Join `111`.library</br>
+<br>On `111`.characters.char_id=`111`.library.char_id;</br>
+
+### Выведите название книги и имя патронуса, вне зависимости от того, есть ли информация о держателе книги в таблице или нет
+<br>select book_name, patronus</br>
+<br>right join  `111`.library</br>
+<br>on `111`.characters.char_id= `111`.library.char_id;</br>
+
+### Выведите имя, фамилию, возраст персонажей и название книги, которая на них числится, при условии, что все владельцы книг должны быть старше 15 лет
+<br>Select fname,lname,age,book_name</br>
+<br>from `111`.characters</br>
+<br>inner join `111`.library</br>
+<br>on `111`.characters.char_id= `111`.library.char_id</br>
+<br>where age>15;</br>
+
+### Выведите имя персонажа, название книги, дату выдачи и дату завершения, при условии, что он младше 15 лет и его патронус неизвестен
+<br>select fname,book_name,start_date,end_date</br>
+<br>from `111`.characters</br>
+<br>inner join `111`.library</br>
+<br>on `111`.characters.char_id=`111`.library.char_id</br>
+<br>where age<15 and patronus= "unknown";</br>
+
+### Используя вложенный запрос количество книг, у которых end_date больше, чем end_date у Hermione
+<br>select count(book_id)</br>
+<br>FROM `111`.library</br>
+<br>where end_date > (select end_date</br>
+<br>FROM `111`.library</br>
+<br>where char_id = 2);</br>
+
+### С помощью вложенного запроса выведите имена всех патронусов, у которых владельцы старше возраста персонажа, у которого патронус Unknown
+<br>select patronus</br>
+<br>FROM `111`.characters</br>
+<br>where age > (select age</br>
+<br>FROM `111`.characters</br>
+<br>where patronus = 'Unknown');</br>
